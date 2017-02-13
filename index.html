@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Living Index
+		</title>
+		<meta content="initial-scale=1.0, user-scalable=no" name="viewport">
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta content="capanh" name="author">
+		<link href="http://cartodb.com/assets/favicon.ico" rel="shortcut icon">
+		<script language="JavaScript" src="jquery.min.js" type="text/javascript">
+		</script>
+		<script language="JavaScript" src="bootstrap-slider.js" type="text/javascript">
+		</script>
+		<script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js">
+		</script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type=
+		"text/javascript">
+		</script>
+		<style>
+		                              html,
+		                              body,
+		                              #map {
+		                                  height: 600px;
+		                                  width: 1900px;
+		                                  left: 0px;
+		                              top : 40px;
+		                                  padding: 0;
+		                                  margin: 0;
+		                              }
+		                              
+		                              #Myslider {
+		                                  position: relative;
+		                              }
+		                              
+		                              #Myslider.slider-selection,
+		                              #Myslider.slider-track-low {
+		                                  background-color: black;
+		                              }
+		</style>
+		<link href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" rel="stylesheet">
+		<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+		<!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
+    <![endif]-->
+		<link href="bootstrap-slider.css" rel="stylesheet" type="text/css">
+		<link href="bootstrap.min.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<!-- include cartodb.js library -->
+
+		<div align="center" id='slider_container'>
+			<p id="demo">
+				Genel Indeks
+			</p>
+			<input data-provide="slider" data-slider-max="8" data-slider-min="1" data-slider-selection=
+			"after" data-slider-step="1" data-slider-value="1" id="Myslider">
+		</div>
+
+		<div id='map'>
+		</div>
+		<script>
+		                        
+
+		                                 function main() {
+
+		                                  var map = new L.Map('map', {
+		                                      zoomControl: false,
+		                                      center: [38.9765, 35.3320],
+		                                      zoom: 5
+		                                  });
+
+		                                  L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
+		                                      attribution: 'CartoDB · OSM data'
+		                                  }).addTo(map);
+		                               
+		                                  cartodb.createLayer(map, 'https://capanh.carto.com/api/v2/viz/7eb6b28a-eec0-11e6-967a-0ee66e2c9693/viz.json', {
+		                                       https: true,
+		                                       legends: true,
+		                                       cartodb_logo:true,
+		                                       layerIndex:1 
+		                                      })
+		                                      .addTo(map)
+		                                      .done(function(layer) { // yükleme başarılıysa burdan devam
+		                     
+		                                 var sublayer0 = layer.getSubLayer(0); //konut
+		                                 var sublayer1 = layer.getSubLayer(1); //genel endeks
+		                                 var sublayer2 = layer.getSubLayer(2); // calisma
+		                                 var sublayer3 = layer.getSubLayer(3); // gelir ve servet
+		                                 var sublayer4 = layer.getSubLayer(4); // sağlık
+		                                 var sublayer5 = layer.getSubLayer(5); // eğitim
+		                                 var sublayer6 = layer.getSubLayer(6); // çevre
+		                                 var sublayer7 = layer.getSubLayer(7); // güvenlik
+
+
+		                              // katmanları gizle
+		                                sublayer0.hide();
+		                                sublayer1.hide();                   
+		                                sublayer2.hide();
+		                                sublayer3.hide();
+		                                sublayer4.hide();
+		                                sublayer5.hide();
+		                                sublayer6.hide();
+		                                sublayer7.hide();
+
+		                                
+
+		                               $("#Myslider").on('slide', function(slideEvt) {  
+		                               $("#SliderVal").text(slideEvt.value);
+		                                 // turn on layer off, turn off layer on
+		                                   if ($('#Myslider').val() == 1) {
+		                                	sublayer0.show();
+		                                sublayer1.hide();                   
+		                                sublayer2.hide();
+		                                sublayer3.hide();
+		                                sublayer4.hide();
+		                                sublayer5.hide();
+		                                sublayer6.hide();
+		                                sublayer7.hide();
+
+										   }else if ($('#Myslider').val() == 2) {
+		                                sublayer0.hide();
+		                                	sublayer1.show();                   
+		                                sublayer2.hide();
+		                                sublayer3.hide();
+		                                sublayer4.hide();
+		                                sublayer5.hide();
+		                                sublayer6.hide();
+		                                sublayer7.hide();
+
+		                             } else if ($('#Myslider').val() == 3){
+		                                sublayer0.hide();
+		                                sublayer1.hide();                   
+		                                	sublayer2.show();
+		                                sublayer3.hide();
+		                                sublayer4.hide();
+		                                sublayer5.hide();
+		                                sublayer6.hide();
+		                                sublayer7.hide();
+		                             }else if ($('#Myslider').val() == 4){
+		                                sublayer0.hide();
+		                                sublayer1.hide();                   
+		                                sublayer2.hide();
+		                                	sublayer3.show();
+		                                sublayer4.hide();
+		                                sublayer5.hide();
+		                                sublayer6.hide();
+		                                sublayer7.hide();
+		                             }else if ($('#Myslider').val() == 5){
+		                                sublayer0.hide();
+		                                sublayer1.hide();                   
+		                                sublayer2.hide();
+		                                sublayer3.hide();
+											sublayer4.show();
+		                                sublayer5.hide();
+		                                sublayer6.hide();
+		                                sublayer7.hide();
+		                             }else if ($('#Myslider').val() == 6){
+		                                sublayer0.hide();
+		                                sublayer1.hide();                   
+		                                sublayer2.hide();
+		                                sublayer3.hide();
+		                                sublayer4.hide();
+		                                	sublayer5.show();
+		                                sublayer6.hide();
+		                                sublayer7.hide();
+		                             }else if ($('#Myslider').val() == 7){
+		                                sublayer0.hide();
+		                                sublayer1.hide();                   
+		                                sublayer2.hide();
+		                                sublayer3.hide();
+		                                sublayer4.hide();
+		                                sublayer5.hide();
+		                                	sublayer6.show();
+		                                sublayer7.hide();
+		                             } else if ($('#Myslider').val() == 8){
+		                                sublayer0.hide();
+		                                sublayer1.hide();                   
+		                                sublayer2.hide();
+		                                sublayer3.hide();
+		                                sublayer4.hide();
+		                                sublayer5.hide();
+		                                sublayer6.hide();
+		                                	sublayer7.show();
+		                             } 
+		                           
+		                                  });
+		                                     })
+		                                     .error(function(err) { // when error, do this
+		                                       console.log("error: " + err);
+		                                         });
+		                                     
+		                                     
+		                         $('#Myslider').slider();
+		                         $("#Myslider").on("slide", function(slideEvt) {
+
+		                             $("#SliderVal").text(slideEvt.value);
+		              if ($('#Myslider').val() == 1) {
+		                  document.getElementById("demo").innerHTML = "Genel endeks";
+		              }
+		              if ($('#Myslider').val() == 2) {
+		                  document.getElementById("demo").innerHTML = "Konut";
+		              }
+		              if ($('#Myslider').val() == 3) {
+		                  document.getElementById("demo").innerHTML = "Çalışma hayatı";
+		              }
+		              if ($('#Myslider').val() == 4) {
+		                  document.getElementById("demo").innerHTML = "Gelir ve servet";
+		              }
+		              if ($('#Myslider').val() == 5) {
+		                  document.getElementById("demo").innerHTML = "Sağlık";
+		              }
+		              if ($('#Myslider').val() == 6) {
+		                  document.getElementById("demo").innerHTML = "Eğitim";
+		              }
+		              if ($('#Myslider').val() == 7) {
+		                  document.getElementById("demo").innerHTML = "Çevre";
+		              }
+		              if ($('#Myslider').val() == 8) {
+		                  document.getElementById("demo").innerHTML = "Güvenlik";
+		              }
+		                         });
+										  }
+
+		                               
+
+		                              window.onload = main;
+		</script>
+		<br></br>
+	
+	
+	
+<ol id="myoL">
+  <li>x</li>
+  <li>Tea</li>
+  <li>Milk</li>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+  <li>Milk</li>
+</ol>
+	</body>
+</html>

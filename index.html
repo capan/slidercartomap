@@ -1,8 +1,10 @@
+
+‎
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>
-			Living Index
+			YAŞAM ENDEKS HARİTASI
 		</title>
 		<meta content="initial-scale=1.0, user-scalable=no" name="viewport">
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
@@ -18,31 +20,57 @@
 		"text/javascript">
 		</script>
 		<style>
-		                              html,
-		                              body,
-		                              #map {
-		                                  height: 600px;
-		                                  width: 1900px;
-		                                  left: 0px;
-		                              top : 40px;
-		                                  padding: 0;
-		                                  margin: 0;
-		                              }
-		                              
-		                              #Myslider {
-		                                  position: relative;
-		                              }
-		                              
-		                              #Myslider.slider-selection,
-		                              #Myslider.slider-track-low {
-		                                  background-color: black;
-		                              }
+		                                    html,
+		                                    body,
+		                                    #map {
+		                                        height: 80%;
+		                                        width: 100%;
+		                                        left: 0px;
+		                                    top : 40px;
+		                                        padding: 0;
+		                                        margin: 0;
+		                                    }
+		                                    
+		                                    #Myslider {
+		                                        position: relative;
+		                                    }
+		                                    
+		                                    #Myslider.slider-selection,
+		                                    #Myslider.slider-track-low {
+		                                        background-color: black;
+		                                    }
+						    #listbas {display:inline-block;
+							  left:20px;
+   							  color: black;
+							  position: absolute;
+							       }
+						    #acbas {display:inline-block;
+							   position: absolute;
+							   left:50%;
+							   width:500px;
+							   font-size: 250%;
+						           }
+						    #list_container{position:absolute;
+							   top:650px;
+							       }
+							#desc {display:inline-block;
+								border: 1px solid black;
+								top:650px;
+								left:50%;
+							    	width:50%;
+								position: absolute;
+								padding: 10px;
+   								 width: 750px;
+    								height: 280px;
+    								text-align: justify;
+								
+								   }
 		</style>
 		<link href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" rel="stylesheet">
 		<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
 		<!--[if lte IE 8]>
-      <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
-    <![endif]-->
+                <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
+                <![endif]-->
 		<link href="bootstrap-slider.css" rel="stylesheet" type="text/css">
 		<link href="bootstrap.min.css" rel="stylesheet" type="text/css">
 	</head>
@@ -51,7 +79,7 @@
 
 		<div align="center" id='slider_container'>
 			<p id="demo">
-				Genel Indeks
+				Genel Endeks
 			</p>
 			<input data-provide="slider" data-slider-max="8" data-slider-min="1" data-slider-selection=
 			"after" data-slider-step="1" data-slider-value="1" id="Myslider">
@@ -59,188 +87,293 @@
 
 		<div id='map'>
 		</div>
-		<script>
-		                        
+		<script>												   			
+                                       function main() {
 
-		                                 function main() {
+		                                        var map = new L.Map('map', {
+		                                            zoomControl: false,
+		                                            center: [38.9765, 35.3320],
+		                                            zoom: 6
+		                                        });
 
-		                                  var map = new L.Map('map', {
-		                                      zoomControl: false,
-		                                      center: [38.9765, 35.3320],
-		                                      zoom: 5
-		                                  });
-
-		                                  L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
-		                                      attribution: 'CartoDB · OSM data'
-		                                  }).addTo(map);
-		                               
-		                                  cartodb.createLayer(map, 'https://capanh.carto.com/api/v2/viz/7eb6b28a-eec0-11e6-967a-0ee66e2c9693/viz.json', {
-		                                       https: true,
-		                                       legends: true,
-		                                       cartodb_logo:true,
-		                                       layerIndex:1 
-		                                      })
-		                                      .addTo(map)
-		                                      .done(function(layer) { // yükleme başarılıysa burdan devam
-		                     
-		                                 var sublayer0 = layer.getSubLayer(0); //konut
-		                                 var sublayer1 = layer.getSubLayer(1); //genel endeks
-		                                 var sublayer2 = layer.getSubLayer(2); // calisma
-		                                 var sublayer3 = layer.getSubLayer(3); // gelir ve servet
-		                                 var sublayer4 = layer.getSubLayer(4); // sağlık
-		                                 var sublayer5 = layer.getSubLayer(5); // eğitim
-		                                 var sublayer6 = layer.getSubLayer(6); // çevre
-		                                 var sublayer7 = layer.getSubLayer(7); // güvenlik
-
-
-		                              // katmanları gizle
-		                                sublayer0.hide();
-		                                sublayer1.hide();                   
-		                                sublayer2.hide();
-		                                sublayer3.hide();
-		                                sublayer4.hide();
-		                                sublayer5.hide();
-		                                sublayer6.hide();
-		                                sublayer7.hide();
-
-		                                
-
-		                               $("#Myslider").on('slide', function(slideEvt) {  
-		                               $("#SliderVal").text(slideEvt.value);
-		                                 // turn on layer off, turn off layer on
-		                                   if ($('#Myslider').val() == 1) {
-		                                	sublayer0.show();
-		                                sublayer1.hide();                   
-		                                sublayer2.hide();
-		                                sublayer3.hide();
-		                                sublayer4.hide();
-		                                sublayer5.hide();
-		                                sublayer6.hide();
-		                                sublayer7.hide();
-
-										   }else if ($('#Myslider').val() == 2) {
-		                                sublayer0.hide();
-		                                	sublayer1.show();                   
-		                                sublayer2.hide();
-		                                sublayer3.hide();
-		                                sublayer4.hide();
-		                                sublayer5.hide();
-		                                sublayer6.hide();
-		                                sublayer7.hide();
-
-		                             } else if ($('#Myslider').val() == 3){
-		                                sublayer0.hide();
-		                                sublayer1.hide();                   
-		                                	sublayer2.show();
-		                                sublayer3.hide();
-		                                sublayer4.hide();
-		                                sublayer5.hide();
-		                                sublayer6.hide();
-		                                sublayer7.hide();
-		                             }else if ($('#Myslider').val() == 4){
-		                                sublayer0.hide();
-		                                sublayer1.hide();                   
-		                                sublayer2.hide();
-		                                	sublayer3.show();
-		                                sublayer4.hide();
-		                                sublayer5.hide();
-		                                sublayer6.hide();
-		                                sublayer7.hide();
-		                             }else if ($('#Myslider').val() == 5){
-		                                sublayer0.hide();
-		                                sublayer1.hide();                   
-		                                sublayer2.hide();
-		                                sublayer3.hide();
-											sublayer4.show();
-		                                sublayer5.hide();
-		                                sublayer6.hide();
-		                                sublayer7.hide();
-		                             }else if ($('#Myslider').val() == 6){
-		                                sublayer0.hide();
-		                                sublayer1.hide();                   
-		                                sublayer2.hide();
-		                                sublayer3.hide();
-		                                sublayer4.hide();
-		                                	sublayer5.show();
-		                                sublayer6.hide();
-		                                sublayer7.hide();
-		                             }else if ($('#Myslider').val() == 7){
-		                                sublayer0.hide();
-		                                sublayer1.hide();                   
-		                                sublayer2.hide();
-		                                sublayer3.hide();
-		                                sublayer4.hide();
-		                                sublayer5.hide();
-		                                	sublayer6.show();
-		                                sublayer7.hide();
-		                             } else if ($('#Myslider').val() == 8){
-		                                sublayer0.hide();
-		                                sublayer1.hide();                   
-		                                sublayer2.hide();
-		                                sublayer3.hide();
-		                                sublayer4.hide();
-		                                sublayer5.hide();
-		                                sublayer6.hide();
-		                                	sublayer7.show();
-		                             } 
+		                                        L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
+		                                            attribution: 'CartoDB ? OSM data'
+		                                        }).addTo(map);
+		                                     
+		                                        cartodb.createLayer(map, 'https://capanh.carto.com/api/v2/viz/7eb6b28a-eec0-11e6-967a-0ee66e2c9693/viz.json', {
+		                                             https: true,
+		                                             legends: true,
+		                                             cartodb_logo:true,
+		                                             layerIndex:1 
+		                                            })
+		                                            .addTo(map)
+		                                            .done(function(layer) { // yükleme başarılıysa burdan devam
 		                           
-		                                  });
-		                                     })
-		                                     .error(function(err) { // when error, do this
-		                                       console.log("error: " + err);
-		                                         });
+		                                       var sublayer0 = layer.getSubLayer(0); //konut
+		                                       var sublayer1 = layer.getSubLayer(1); //genel endeks
+		                                       var sublayer2 = layer.getSubLayer(2); // calisma
+		                                       var sublayer3 = layer.getSubLayer(3); // gelir ve servet
+		                                       var sublayer4 = layer.getSubLayer(4); // sağlık
+		                                       var sublayer5 = layer.getSubLayer(5); // eğitim
+		                                       var sublayer6 = layer.getSubLayer(6); // çevre
+		                                       var sublayer7 = layer.getSubLayer(7); // güvenlik
+
+
+		                                    // katmanları gizle
+		                                      sublayer0.hide();
+		                                      sublayer1.hide();                   
+		                                      sublayer2.hide();
+		                                      sublayer3.hide();
+		                                      sublayer4.hide();
+		                                      sublayer5.hide();
+		                                      sublayer6.hide();
+		                                      sublayer7.hide();
+
+		                                     $("#Myslider").on('slide', function(slideEvt) {  
+		                                     $("#SliderVal").text(slideEvt.value);
+		                                       // turn on layer off, turn off layer on
+		                                         if ($('#Myslider').val() == 1) {
+		                                          sublayer0.show();
+		                                      sublayer1.hide();                   
+		                                      sublayer2.hide();
+		                                      sublayer3.hide();
+		                                      sublayer4.hide();
+		                                      sublayer5.hide();
+		                                      sublayer6.hide();
+		                                      sublayer7.hide();
+		                                         }else if ($('#Myslider').val() == 2) {
+		                                      sublayer0.hide();
+		                                          sublayer1.show();                   
+		                                      sublayer2.hide();
+		                                      sublayer3.hide();
+		                                      sublayer4.hide();
+		                                      sublayer5.hide();
+		                                      sublayer6.hide();
+		                                      sublayer7.hide();
+		                                   } else if ($('#Myslider').val() == 3){
+		                                      sublayer0.hide();
+		                                      sublayer1.hide();                   
+		                                          sublayer2.show();
+		                                      sublayer3.hide();
+		                                      sublayer4.hide();
+		                                      sublayer5.hide();
+		                                      sublayer6.hide();
+		                                      sublayer7.hide();
+		                                   }else if ($('#Myslider').val() == 4){
+		                                      sublayer0.hide();
+		                                      sublayer1.hide();                   
+		                                      sublayer2.hide();
+		                                          sublayer3.show();
+		                                      sublayer4.hide();
+		                                      sublayer5.hide();
+		                                      sublayer6.hide();
+		                                      sublayer7.hide();
+		                                   }else if ($('#Myslider').val() == 5){
+		                                      sublayer0.hide();
+		                                      sublayer1.hide();                   
+		                                      sublayer2.hide();
+		                                      sublayer3.hide();
+		                                          sublayer4.show();
+		                                      sublayer5.hide();
+		                                      sublayer6.hide();
+		                                      sublayer7.hide();
+		                                   }else if ($('#Myslider').val() == 6){
+		                                      sublayer0.hide();
+		                                      sublayer1.hide();                   
+		                                      sublayer2.hide();
+		                                      sublayer3.hide();
+		                                      sublayer4.hide();
+		                                          sublayer5.show();
+		                                      sublayer6.hide();
+		                                      sublayer7.hide();
+		                                   }else if ($('#Myslider').val() == 7){
+		                                      sublayer0.hide();
+		                                      sublayer1.hide();                   
+		                                      sublayer2.hide();
+		                                      sublayer3.hide();
+		                                      sublayer4.hide();
+		                                      sublayer5.hide();
+		                                          sublayer6.show();
+		                                      sublayer7.hide();
+		                                   } else if ($('#Myslider').val() == 8){
+		                                      sublayer0.hide();
+		                                      sublayer1.hide();                   
+		                                      sublayer2.hide();
+		                                      sublayer3.hide();
+		                                      sublayer4.hide();
+		                                      sublayer5.hide();
+		                                      sublayer6.hide();
+		                                          sublayer7.show();
+		                                   } 
+		                                 
+		                                        });
+		                                           })
+		                                           .error(function(err) { // when error, do this
+		                                             console.log("error: " + err);
+		                                               });
+												                                
+		                                           
+		                               $('#Myslider').slider();
+		                               $("#Myslider").on("slide", function(slideEvt) {
+
+		                                   $("#SliderVal").text(slideEvt.value);
+		                    if ($('#Myslider').val() == 1) {
+		                        document.getElementById("demo").innerHTML = "Genel Endeks";
+								document.getElementById("listbas").innerHTML  = "Genel Endekste İlk On";
+								document.getElementById("nr1").innerHTML = "Isparta";
+								document.getElementById("nr2").innerHTML = "Sakarya";
+								document.getElementById("nr3").innerHTML = "Bolu";
+								document.getElementById("nr4").innerHTML = "Kutahya";
+								document.getElementById("nr5").innerHTML = "Istanbul";
+								document.getElementById("nr6").innerHTML = "Usak";
+								document.getElementById("nr7").innerHTML = "Balikesir";
+								document.getElementById("nr8").innerHTML = "Artvin";
+								document.getElementById("nr9").innerHTML = "Kirikkale";
+								document.getElementById("nr10").innerHTML = "Afyonkarahisar";
+								document.getElementById("desc").innerHTML = "İllerde Yaşam Endeksi çalışmasının temel amacı ildeki yaşamın tüm boyutları ile izlenmesine ve iyileştirilmesine altlık oluşturacak bir gösterge sistemi geliştirmektir. Genel Endeks diğer endeks değerlerinin ortalama değeridir.";
+		                    				document.getElementById("acbas").innerHTML ="Yaşam Endeksi Nedir ?";
+								}
+		                    if ($('#Myslider').val() == 2) {
+		                        document.getElementById("demo").innerHTML = "Konut";
+		                        document.getElementById("listbas").innerHTML  = "Konut Endeksinde İlk On";
+								document.getElementById("nr1").innerHTML = "Sakarya";
+								document.getElementById("nr2").innerHTML = "Sinop";
+								document.getElementById("nr3").innerHTML = "Bolu";
+								document.getElementById("nr4").innerHTML = "Isparta";
+								document.getElementById("nr5").innerHTML = "Eskişehir";
+								document.getElementById("nr6").innerHTML = "Bilecik";
+								document.getElementById("nr7").innerHTML = "Rize";
+								document.getElementById("nr8").innerHTML = "Ankara";
+								document.getElementById("nr9").innerHTML = "Yalova";
+								document.getElementById("nr10").innerHTML = "Çankiri";
+								document.getElementById("desc").innerHTML ="Konut, insanlar tarafından barınma ve yaşam alanı olarak kullanılan, bireylerin yaşamsal ihtiyaçlarını giderdikleri, sosyal ilişkilere girdikleri temel bir yaşam boyutudur. Konutun birey ve hanehalkının yaşam kalitesi açısından asgari niteliklere ve yeterliliklere sahip olması gerekmektedir. Konut içinde tuvalet sahipliği,  bireyin mahremiyeti için bağımsız oda veya yeterli yaşam alanı, konutun fiziki özellikleri (kapılar, pencereler, çatı, kat, tesisat, altyapı gibi), yeterli derecede ısınması, dış etkilere karşı koruyucu olması, yeterli gün ışığı alabilmesi bu özelliklerden bazılarıdır. Konutun olanakları eğitim, güvenlik, sağlık, yaşam memnuniyeti, çalışma hayatı, sosyal yaşam, sosyal ilişkiler gibi diğer yaşam boyutlarını da doğrudan etkilemektedir. Konut boyutu aşağıda açıklanan üç gösterge ile temsil edilmektedir.Konut boyutu aşağıda açıklanan üç gösterge ile temsil edilmektedir;"+"<br />"+"1) Fert başına düşen oda sayısı"+"<br />"+"2) Konutun içinde tuvalet mevcudiyeti oranı"+"<br />"+"3) Konutun kalitesinde problem yaşayanların oranı";
+								document.getElementById("acbas").innerHTML ="Konut Endeksi Nedir ?";
+		                    }
+		                    if ($('#Myslider').val() == 3) {
+		                        document.getElementById("demo").innerHTML = "Çalışma Hayatı";
+								document.getElementById("listbas").innerHTML  = "Çalışma Hayatı Endeksinde İlk On";
+								document.getElementById("nr1").innerHTML = "Zonguldak";
+								document.getElementById("nr2").innerHTML = "Bilecik";
+								document.getElementById("nr3").innerHTML = "Kütahya";
+								document.getElementById("nr4").innerHTML = "Uşak";
+								document.getElementById("nr5").innerHTML = "Rize";
+								document.getElementById("nr6").innerHTML = "Tekirdağ";
+								document.getElementById("nr7").innerHTML = "Bartin";
+								document.getElementById("nr8").innerHTML = "Artvin";
+								document.getElementById("nr9").innerHTML = "Karaman";
+								document.getElementById("nr10").innerHTML = "Kocaeli";
+								document.getElementById("desc").innerHTML ="Çalışma hayatının kişilerin ruhsal, fiziksel yaşamı ve maddi hayatı üzerine somut etkileri mevcuttur. Çalışma hayatını iyileştiren unsurlar, kişilerin maddi olarak daha çok kaynağa erişebildiği bir hayat sürmelerini sağladığı gibi, onlara yeteneklerini geliştirme, amaçlarını gerçekleştirebilme, toplum içinde yararlı hissetme ve özgüvenini arttırma yoluyla yaşamını iyileştirme imkânı da sağlamaktadır. Çalışma hayatı boyutu aşağıda açıklanan dört gösterge ile temsil edilmektedir"+"<br />"+"1) İstihdam oranı"+"<br />"+"2) İşsizlik oran"+"<br />"+"3) Ortalama günlük kazanç"+"<br />"+"4) İşinden memnuniyet oranı";
+								document.getElementById("acbas").innerHTML ="Çalışma Hayatı Endeksi Nedir ?";
+}
+		                    if ($('#Myslider').val() == 4) {
+		                        document.getElementById("demo").innerHTML = "Gelir ve servet";
+								document.getElementById("listbas").innerHTML  = "Gelir ve Servet Endeksinde İlk On";
+								document.getElementById("nr1").innerHTML = "İstanbul";
+								document.getElementById("nr2").innerHTML = "Ankara";
+								document.getElementById("nr3").innerHTML = "Izmir";
+								document.getElementById("nr4").innerHTML = "Kocaeli";
+								document.getElementById("nr5").innerHTML = "Tekirdağ";
+								document.getElementById("nr6").innerHTML = "Zonguldak";
+								document.getElementById("nr7").innerHTML = "Yalova";
+								document.getElementById("nr8").innerHTML = "Antalya";
+								document.getElementById("nr9").innerHTML = "Bolu";
+								document.getElementById("nr10").innerHTML = "Kırklareli";
+								document.getElementById("desc").innerHTML ="Gelir ve servet, kişilerin ihtiyaç ve isteklerini karşılamada, ekonomik ve kişisel risklere karşı koruma sağlamada en önemli belirleyicilerden biridir. Daha iyi sağlık ve eğitim durumu, yaşamdan daha yüksek bir tatmin ve daha temiz ve güvenli yerlerde yaşama ihtimallerinin gelir ve servetin yükselmesi ile paralel olarak yükseleceği değerlendirilmektedir. Gelir ve servet boyutu aşağıda açıklanan üç gösterge ile temsil edilmektedir."+"<br />"+"1) Kişi başına düşen tasarruf mevduatı"+"<br />"+"2) Orta ve üstü gelir grubundaki hanelerin oranı"+"<br />"+"3) Temel ihtiyaçlarını karşılayamadığını beyan eden hanelerin oranı";
+		                   				document.getElementById("acbas").innerHTML ="Gelir ve Servet Endeksi Nedir ?";
+ }
+		                    if ($('#Myslider').val() == 5) {
+		                        document.getElementById("demo").innerHTML = "Sağlık";
+								document.getElementById("listbas").innerHTML  = "Sağlık Endeksinde Ilk On";
+								document.getElementById("nr1").innerHTML = "Isparta";
+								document.getElementById("nr2").innerHTML = "Bolu";
+								document.getElementById("nr3").innerHTML = "Rize";
+								document.getElementById("nr4").innerHTML = "Trabzon";
+								document.getElementById("nr5").innerHTML = "Artvin";
+								document.getElementById("nr6").innerHTML = "Ankara";
+								document.getElementById("nr7").innerHTML = "Kırıkkale";
+								document.getElementById("nr8").innerHTML = "Konya";
+								document.getElementById("nr9").innerHTML = "Edirne";
+								document.getElementById("nr10").innerHTML = "Denizli";
+								document.getElementById("desc").innerHTML ="Bireyin yaşam döngüsü içinde daha iyi seviyelere erişebilmesi açısından genel sağlık durumunun ve sahip olunan olanakların iyileştirilebilmesinin önemi yüksektir. Sağlık kavramı, bireylerin yaşam kalitesi ile doğru orantılı olan çok önemli bir kavramdır. Sağlık olanakları, yaşam uzunluğu, öznel sağlık durumu, alınan sağlık hizmetlerinden memnuniyet, hastalıksız ve engelsiz bir yaşam bireyler için önemli değerlerdir. Söz konusu değerler eğitim, sosyal yaşam, sosyal ilişkiler, bireyin işgücüne katılımı, sağlıklı nesillerin yetişmesi gibi konular için de büyük öneme sahiptir. Ayrıca sağlık altyapısı ve olanakları, bu olanakların yeterliliği ve çeşitliliği ve kişilerin bu olanaklardan memnuniyeti ise insana ve insan hayatına verilen değeri ortaya koymaktadır. Sağlık boyutu toplam beş gösterge ile temsil edilmektedir."+"<br />"+"1) Bebek ölüm hızı"+"<br />"+"2) Doğuşta beklenen yaşam süresi"+"<br />"+"3) Hekim başına düşen müracaat sayısı"+"<br />"+"4) Sağlığından memnuniyet oranı"+"<br />"+"5) Kamunun sağlık hizmetlerinden memnuniyet oranı";
+								document.getElementById("acbas").innerHTML ="Sağlık Endeksi Nedir ?";
+		                    }
+		                    if ($('#Myslider').val() == 6) {
+		                        document.getElementById("demo").innerHTML = "Eğitim";
+								document.getElementById("listbas").innerHTML  = "Eğitim Endeksinde İlk On";
+								document.getElementById("nr1").innerHTML = "Tunceli";
+								document.getElementById("nr2").innerHTML = "Isparta";
+								document.getElementById("nr3").innerHTML = "Amasya";
+								document.getElementById("nr4").innerHTML = "Kırşehir";
+								document.getElementById("nr5").innerHTML = "Yalova";
+								document.getElementById("nr6").innerHTML = "Burdur";
+								document.getElementById("nr7").innerHTML = "Giresun";
+								document.getElementById("nr8").innerHTML = "Çanakkale";
+								document.getElementById("nr9").innerHTML = "Karabük";
+								document.getElementById("nr10").innerHTML = "Edirne";
+								document.getElementById("desc").innerHTML ="Eğitim insanların topluma ve ekonomiye verimli bir şekilde katılması için gerekli bilgi, beceri ve yeterliliklerin sağlanmasında anahtar bir role sahiptir Buna ek olarak eğitim; sağlık, sivil katılım, politikaya ilgi ve mutluluk gibi alanlarda insanların yaşamına olumlu katkı sağlar. Çalışmalar, eğitimli insanların daha uzun süre yaşadığını, yaşadıkları yerde politikaya ve topluma daha etkin katıldığını, daha az suç işlediğini ve sosyal yardımlara daha az muhtaç kaldıklarını göstermektedir. İnsanların aldıkları eğitimin kalitesi ile sürdürdükleri yaşam kalitesi arasında aynı yönde ilişki bulunmaktadır. Eğitim boyutu beş gösterge ile temsil edilmektedir."+"<br />"+"1) Okul öncesi eğitimde (3-5 yaş) net okullaşma oranı"+"<br />"+"2) TEOG sistemi yerleştirmeye esas puan ortalaması"+"<br />"+"3) YGS puan ortalaması"+"<br />"+"4) Fakülte veya yüksekokul mezunlarının oranı"+"<br />"+"5) Kamunun eğitim hizmetlerinden memnuniyet oranı";
+		                    				document.getElementById("acbas").innerHTML ="Eğitim Endeksi Nedir ?";
+}
+		                    if ($('#Myslider').val() == 7) {
+		                        document.getElementById("demo").innerHTML = "Çevre";
+								document.getElementById("listbas").innerHTML  = "Çevre Endeksinde Ilk On";
+								document.getElementById("nr1").innerHTML = "Kastamonu";
+								document.getElementById("nr2").innerHTML = "Karabük";
+								document.getElementById("nr3").innerHTML = "Bilecik";
+								document.getElementById("nr4").innerHTML = "Kırklareli";
+								document.getElementById("nr5").innerHTML = "Yalova";
+								document.getElementById("nr6").innerHTML = "Denizli";
+								document.getElementById("nr7").innerHTML = "Manisa";
+								document.getElementById("nr8").innerHTML = "Artvin";
+								document.getElementById("nr9").innerHTML = "Balikesir";
+								document.getElementById("nr10").innerHTML = "Aydın";
+								document.getElementById("desc").innerHTML ="İnsanların yaşadığı çevre, onların mevcut ve gelecekteki sağlığına ve sürdürülebilir yaşamına doğrudan etki etmektedir. Hava ve su kalitesi yüksek bir çevre tatmin kaynağı olup, ruhsal sağlığın iyileştirilmesine, günlük hayatın stresinin atılmasına ve fiziksel etkinliklerin yapılmasına imkan sağlamaktadır. Kirletici maddeler ve aşırı gürültü insanların sağlığını olumsuz etkilemektedir. Çevre kalitesi konusunda insanların algıları, çevresel koşullar ve insanların yaşadıkları yerler hakkında kritik bilgi sağlar. İlaveten ekonomiler sadece sağlıklı ve üretken çalışanlara değil, aynı zamanda orman, su, sulak alan, yeşil alanlar gibi doğal kaynaklara dayanmaktadır. Bu nedenle çevreyi ve doğal kaynakları korumak bugünkü ve gelecek nesillerin uzun dönemli önceliği olarak kalacaktır. Çevre boyutu aşağıda açıklanan beş gösterge ile temsil edilmektedir."+"<br />"+"1) PM10 istasyon değerleri ortalaması (hava kirliliği)"+"<br />"+ "2) Km2'ye düşen orman alanı"+"<br />"+ "3) Atık hizmeti verilen nüfusun oranı"+"<br />"+ "4) Sokaktan gelen gürültü problemi yaşayanların oranı"+"<br />"+ "5) Belediyenin temizlik hizmetlerinden memnuniyet oranı";
+								document.getElementById("acbas").innerHTML ="Çevre Endeksi Nedir ?";                   
+ }
+		                    if ($('#Myslider').val() == 8) {
+		                        document.getElementById("demo").innerHTML = "Güvenlik";
+								document.getElementById("listbas").innerHTML  = "Güvenlik Endeksinde Ilk On";
+								document.getElementById("nr1").innerHTML = "Artvin";
+								document.getElementById("nr2").innerHTML = "Sinop";
+								document.getElementById("nr3").innerHTML = "Gümüşhane";
+								document.getElementById("nr4").innerHTML = "Kahramanmaraş";
+								document.getElementById("nr5").innerHTML = "Rize";
+								document.getElementById("nr6").innerHTML = "Kütahya";
+								document.getElementById("nr7").innerHTML = "Bartın";
+								document.getElementById("nr8").innerHTML = "Afyonkarahisar";
+								document.getElementById("nr9").innerHTML = "Giresun";
+								document.getElementById("nr10").innerHTML = "Iğdır";
+								document.getElementById("desc").innerHTML ="Bir idari birim veya bir bölgenin toplumsal gelişmişliği incelenirken, güvenlik durumu büyük önem teşkil etmektedir. Bireylerin, diğer yaşamsal faaliyetlerini sürdürmeleri için kendilerini güvende hissetmeye ihtiyaçları vardır. Bireylerin güvenliğini etkileyen pek çok unsur bulunmaktadır. Bu unsurlar bireyleri sadece fiziksel değil; aynı zamanda zihinsel olarak da etkileyebilmektedir. Güvenlik boyutu dört gösterge ile temsil edilmektedir." +"<br />"+"1) Cinayet oranı (bir milyon kişide)"+"<br />"+" 2) Ölümlü ve yaralanmalı trafik kazası sayısı (bin kişide)"+"<br />"+"3) Gece yalnız yürürken kendini güvende hissedenlerin oranı"+"<br />"+"4) Kamunun asayiş hizmetlerinden memnuniyet oranı";
+		                    				document.getElementById("acbas").innerHTML ="Güvenlik Endeksi Nedir ?";
+}
+		                               });
+		                                        }
+
 		                                     
-		                                     
-		                         $('#Myslider').slider();
-		                         $("#Myslider").on("slide", function(slideEvt) {
 
-		                             $("#SliderVal").text(slideEvt.value);
-		              if ($('#Myslider').val() == 1) {
-		                  document.getElementById("demo").innerHTML = "Genel endeks";
-		              }
-		              if ($('#Myslider').val() == 2) {
-		                  document.getElementById("demo").innerHTML = "Konut";
-		              }
-		              if ($('#Myslider').val() == 3) {
-		                  document.getElementById("demo").innerHTML = "Çalışma hayatı";
-		              }
-		              if ($('#Myslider').val() == 4) {
-		                  document.getElementById("demo").innerHTML = "Gelir ve servet";
-		              }
-		              if ($('#Myslider').val() == 5) {
-		                  document.getElementById("demo").innerHTML = "Sağlık";
-		              }
-		              if ($('#Myslider').val() == 6) {
-		                  document.getElementById("demo").innerHTML = "Eğitim";
-		              }
-		              if ($('#Myslider').val() == 7) {
-		                  document.getElementById("demo").innerHTML = "Çevre";
-		              }
-		              if ($('#Myslider').val() == 8) {
-		                  document.getElementById("demo").innerHTML = "Güvenlik";
-		              }
-		                         });
-										  }
+		                                    window.onload = main;
+		</script><br>
+		/n<br>
 
-		                               
-
-		                              window.onload = main;
-		</script>
-		<br></br>
-	
-	
-	
-<ol id="myoL">
-  <li>x</li>
-  <li>Tea</li>
-  <li>Milk</li>
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Milk</li>
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Milk</li>
-  <li>Milk</li>
-</ol>
+		<h3 id="listbas">Endekse Göre Sıralamaları Görmek İçin Üstten Seçim Yapın !</h3>
+		<h2 id="acbas" align="center" id="qu">Yaşam Endeksi Nedir ?</h2>
+		<p id="desc">Açıklama</p>
+		
+		<div id='list_container'>
+			
+		<ol>
+			
+	         <li id="nr1"><b></b></li>
+  		 <li id="nr2"></li>
+ 		 <li id="nr3"></li>
+		 <li id="nr4"></li>
+	         <li id="nr5"></li>
+		 <li id="nr6"></li>
+		 <li id="nr7"></li>
+		 <li id="nr8"></li>
+		 <li id="nr9"></li>
+		 <li id="nr10"></li>
+		</ol>
+		
+		</div>
 	</body>
 </html>
